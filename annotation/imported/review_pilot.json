@@ -1,0 +1,126 @@
+{
+  "group": "review_pilot",
+  "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+  "annotator": "participant_1",
+  "exported_at": "2026-11-09T11:59:34.867Z",
+  "answers": [
+    {
+      "id": "gazeta_18651",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 0
+        },
+        {
+          "supported": true,
+          "human_index": -1
+        }
+      ]
+    },
+    {
+      "id": "gazeta_46346",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 1
+        },
+        {
+          "supported": true,
+          "human_index": 2
+        }
+      ]
+    },
+    {
+      "id": "gazeta_44496",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 0
+        }
+      ]
+    },
+    {
+      "id": "gazeta_12827",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 1
+        }
+      ]
+    },
+    {
+      "id": "gazeta_35151",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 0
+        },
+        {
+          "supported": true,
+          "human_index": 2
+        }
+      ]
+    },
+    {
+      "id": "gazeta_18627",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 1
+        }
+      ]
+    },
+    {
+      "id": "gazeta_19567",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 1
+        },
+        {
+          "supported": true,
+          "human_index": 2
+        }
+      ]
+    },
+    {
+      "id": "gazeta_25263",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 0
+        },
+        {
+          "supported": true,
+          "human_index": -1
+        }
+      ]
+    },
+    {
+      "id": "gazeta_38485",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 0
+        },
+        {
+          "supported": true,
+          "human_index": 2
+        }
+      ]
+    },
+    {
+      "id": "gazeta_25226",
+      "links": [
+        {
+          "supported": true,
+          "human_index": 0
+        },
+        {
+          "supported": true,
+          "human_index": -1
+        }
+      ]
+    }
+  ]
+}

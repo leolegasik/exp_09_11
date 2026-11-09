@@ -1,0 +1,168 @@
+{
+  "group": "audit",
+  "corpus_sha256": "764e3d2a16fdd3e6d803c4a039ad0ef86c1a702dda2750df3c0d45810c7bad77",
+  "protocol_version": "blind_v1",
+  "draft": false,
+  "answers": [
+    {
+      "id": "gazeta_12886",
+      "triples": [
+        [
+          "соперники локомотива и рубикона",
+          "свели вничью",
+          "свои матчи"
+        ],
+        [
+          "андерлехт",
+          "не справился",
+          "с уд-эверле"
+        ],
+        [
+          "паок",
+          "ушел от поражения",
+          "в матче против пас"
+        ]
+      ],
+      "labels": [
+        "conflict"
+      ],
+      "comment": "",
+      "complete": true
+    },
+    {
+      "id": "gazeta_10979",
+      "triples": [
+        [
+          "Facebook",
+          "запускает «круги» друзей",
+          "по аналогии с Google Plus"
+        ],
+        [
+          "Этот шаг",
+          "меняет политику конфиденциальности",
+          "в социальной сети"
+        ],
+        [
+          "пользователи",
+          "смогут дозировать",
+          "информацию о себе"
+        ]
+      ],
+      "labels": [
+        "cause",
+        "change"
+      ],
+      "comment": "",
+      "complete": true
+    },
+    {
+      "id": "gazeta_11839",
+      "triples": [
+        [
+          "в москве",
+          "похолодает",
+          "из за заморозков"
+        ],
+        [
+          "на неделе",
+          "станет еще холоднее",
+          "ночью"
+        ]
+      ],
+      "labels": [
+        "cause",
+        "change",
+        "forecast"
+      ],
+      "comment": "не лучший текст для разметки",
+      "complete": true
+    },
+    {
+      "id": "gazeta_29152",
+      "triples": [
+        [
+          "фестиваль в тромсё",
+          "завершился",
+          "победой японский \"истории ийи\""
+        ],
+        [
+          "географ глобус пропил",
+          "представлял россию",
+          "на фестивале"
+        ]
+      ],
+      "labels": [
+        "cause",
+        "conflict"
+      ],
+      "comment": "",
+      "complete": true
+    },
+    {
+      "id": "gazeta_19369",
+      "triples": [
+        [
+          "покупка доли",
+          "станет первой сделкой",
+          "российского китайского инвестфонда"
+        ],
+        [
+          "инвестиции",
+          "обеспечат",
+          "1000 новых рабочих мест"
+        ]
+      ],
+      "labels": [
+        "cause",
+        "change",
+        "evaluation"
+      ],
+      "comment": "",
+      "complete": true
+    },
+    {
+      "id": "gazeta_12866",
+      "triples": [
+        [
+          "фестиваль",
+          "представить",
+          "программу"
+        ],
+        [
+          "цель",
+          "выбрать",
+          "лучшие спектакли"
+        ]
+      ],
+      "labels": [
+        "goal",
+        "evaluation",
+        "forecast"
+      ],
+      "comment": "",
+      "complete": true
+    }
+  ],
+  "partial": true,
+  "planned_documents": 20,
+  "completed_documents": 6,
+  "omitted_ids": [
+    "gazeta_11856",
+    "gazeta_12818",
+    "gazeta_16428",
+    "gazeta_16436",
+    "gazeta_19312",
+    "gazeta_19373",
+    "gazeta_25252",
+    "gazeta_29145",
+    "gazeta_40730",
+    "gazeta_46343",
+    "gazeta_46372",
+    "gazeta_52162",
+    "gazeta_55536",
+    "gazeta_55910"
+  ],
+  "source_file": "draft_audit.json",
+  "source_file_sha256": "6a4645895fdae7998183c096c760f28665a5068be9ae940d7191613797655867",
+  "partial_import_reason": "Participant explicitly stopped audit; use completed answers only."
+}
