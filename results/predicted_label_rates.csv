@@ -1,0 +1,13 @@
+﻿split,label,mean,sum,count
+bulk,cause,0.07171717171717172,71,990
+bulk,change,0.37373737373737376,370,990
+bulk,conflict,0.26565656565656565,263,990
+bulk,evaluation,0.09696969696969697,96,990
+bulk,forecast,0.14646464646464646,145,990
+bulk,goal,0.0797979797979798,79,990
+pilot,cause,0.0,0,10
+pilot,change,0.7,7,10
+pilot,conflict,0.3,3,10
+pilot,evaluation,0.0,0,10
+pilot,forecast,0.1,1,10
+pilot,goal,0.0,0,10

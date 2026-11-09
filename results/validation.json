@@ -1,0 +1,27 @@
+{
+  "validated_utc": "2026-11-09T15:35:45.313289+00:00",
+  "status": "passed",
+  "machine_documents": 1000,
+  "pilot_total_runs": 30,
+  "reasoning_tokens": 0,
+  "completion_tokens_first_pass": 75752,
+  "notebook_code_cells_executed": 21,
+  "unit_tests": 19,
+  "unit_test_status": "passed",
+  "real_human_annotations": {
+    "pilot": 10,
+    "audit": 6
+  },
+  "pilot_relation_review": "measured",
+  "transfer_test": "measured",
+  "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+  "corpus_sha256": "764e3d2a16fdd3e6d803c4a039ad0ef86c1a702dda2750df3c0d45810c7bad77",
+  "ui_checks": [
+    "blind form readable",
+    "incomplete export blocked",
+    "draft restored after reload",
+    "model results initially hidden",
+    "graph nodes, arrows and quotes rendered"
+  ],
+  "note": "Validation checks technical integrity. Semantic correctness is measured by real human annotations, not guaranteed."
+}

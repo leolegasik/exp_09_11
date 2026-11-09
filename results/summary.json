@@ -1,0 +1,543 @@
+{
+  "generated_utc": "2026-11-09T15:35:35.279132+00:00",
+  "model": "qwen/qwen3.5-9b",
+  "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+  "corpus": 1000,
+  "processed": 1000,
+  "pilot_processed": 10,
+  "bulk_processed": 990,
+  "triples": 1721,
+  "retry_documents": 0,
+  "pilot_evaluation": {
+    "status": "measured",
+    "group": "pilot",
+    "n_documents": 10,
+    "planned_documents": 10,
+    "partial": false,
+    "annotators": 1,
+    "methods": {
+      "qwen": {
+        "micro_f1": 0.3243243243243243,
+        "macro_f1": 0.24090909090909088,
+        "precision_micro": 0.5454545454545454,
+        "recall_micro": 0.23076923076923078,
+        "hamming_error": 0.4166666666666667,
+        "exact_match": 0.0,
+        "micro_f1_bootstrap95": [
+          0.11428571428571428,
+          0.5365853658536586
+        ],
+        "human_machine_kappa": 0.08980582524271852
+      },
+      "lexical": {
+        "micro_f1": 0.3529411764705882,
+        "macro_f1": 0.325,
+        "precision_micro": 0.75,
+        "recall_micro": 0.23076923076923078,
+        "hamming_error": 0.36666666666666664,
+        "exact_match": 0.0,
+        "micro_f1_bootstrap95": [
+          0.15384615384615385,
+          0.5128205128205128
+        ],
+        "human_machine_kappa": 0.1871921182266011
+      }
+    },
+    "disagreements": [
+      {
+        "id": "gazeta_18651",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_18651",
+        "label": "goal",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_18651",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_18651",
+        "label": "change",
+        "direction": "FP"
+      },
+      {
+        "id": "gazeta_18651",
+        "label": "forecast",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_46346",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_44496",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_44496",
+        "label": "change",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_44496",
+        "label": "evaluation",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_12827",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_12827",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_12827",
+        "label": "change",
+        "direction": "FP"
+      },
+      {
+        "id": "gazeta_35151",
+        "label": "goal",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_18627",
+        "label": "evaluation",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_19567",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_25263",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_25263",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_25263",
+        "label": "change",
+        "direction": "FP"
+      },
+      {
+        "id": "gazeta_25263",
+        "label": "forecast",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_38485",
+        "label": "goal",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_38485",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_38485",
+        "label": "change",
+        "direction": "FP"
+      },
+      {
+        "id": "gazeta_25226",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_25226",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_25226",
+        "label": "change",
+        "direction": "FP"
+      }
+    ],
+    "paired_comparison": {
+      "qwen_minus_lexical_micro_f1": -0.028616852146263916,
+      "paired_bootstrap95": [
+        -0.3394742370632464,
+        0.31214539263981417
+      ]
+    }
+  },
+  "audit_evaluation": {
+    "status": "measured",
+    "group": "audit",
+    "n_documents": 6,
+    "planned_documents": 20,
+    "partial": true,
+    "annotators": 1,
+    "methods": {
+      "qwen": {
+        "micro_f1": 0.4,
+        "macro_f1": 0.2916666666666667,
+        "precision_micro": 0.6666666666666666,
+        "recall_micro": 0.2857142857142857,
+        "hamming_error": 0.3333333333333333,
+        "exact_match": 0.0,
+        "micro_f1_bootstrap95": [
+          0.21052631578947367,
+          0.5454545454545454
+        ],
+        "human_machine_kappa": 0.21739130434782605
+      },
+      "lexical": {
+        "micro_f1": 0.3,
+        "macro_f1": 0.3333333333333333,
+        "precision_micro": 0.5,
+        "recall_micro": 0.21428571428571427,
+        "hamming_error": 0.3888888888888889,
+        "exact_match": 0.0,
+        "micro_f1_bootstrap95": [
+          0.0,
+          0.5263157894736842
+        ],
+        "human_machine_kappa": 0.08695652173913038
+      }
+    },
+    "disagreements": [
+      {
+        "id": "gazeta_12886",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_12886",
+        "label": "change",
+        "direction": "FP"
+      },
+      {
+        "id": "gazeta_10979",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_12866",
+        "label": "evaluation",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_12866",
+        "label": "forecast",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_29152",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_29152",
+        "label": "conflict",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_29152",
+        "label": "change",
+        "direction": "FP"
+      },
+      {
+        "id": "gazeta_11839",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_11839",
+        "label": "forecast",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_19369",
+        "label": "cause",
+        "direction": "FN"
+      },
+      {
+        "id": "gazeta_19369",
+        "label": "evaluation",
+        "direction": "FN"
+      }
+    ],
+    "paired_comparison": {
+      "qwen_minus_lexical_micro_f1": 0.10000000000000003,
+      "paired_bootstrap95": [
+        -0.13727470786294316,
+        0.42105263157894735
+      ]
+    }
+  },
+  "pilot_relations": {
+    "status": "measured",
+    "machine_links": 17,
+    "human_links": 27,
+    "matched_links": 14,
+    "supported_links": 17,
+    "precision": 0.8235294117647058,
+    "recall": 0.5185185185185185,
+    "f1": 0.6363636363636364,
+    "supported_fraction": 1.0,
+    "note": "Ручное взаимно однозначное сопоставление по смыслу одним участником; это не Smatch и не независимый экспертный эталон."
+  },
+  "audit_relations": {
+    "status": "awaiting_human_review"
+  },
+  "transfer": {
+    "status": "measured",
+    "rows": [
+      {
+        "label": "cause",
+        "direction": "FP",
+        "pilot_count": 0,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.0,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "cause",
+        "direction": "FN",
+        "pilot_count": 7,
+        "pilot_n": 10,
+        "audit_count": 4,
+        "audit_n": 6,
+        "pilot_rate": 0.7,
+        "audit_rate": 0.6666666666666666,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": true,
+        "holm_p": 1.0
+      },
+      {
+        "label": "goal",
+        "direction": "FP",
+        "pilot_count": 0,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.0,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "goal",
+        "direction": "FN",
+        "pilot_count": 3,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.3,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 0.25,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "conflict",
+        "direction": "FP",
+        "pilot_count": 0,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.0,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "conflict",
+        "direction": "FN",
+        "pilot_count": 5,
+        "pilot_n": 10,
+        "audit_count": 2,
+        "audit_n": 6,
+        "pilot_rate": 0.5,
+        "audit_rate": 0.3333333333333333,
+        "fisher_p_exploratory": 0.6328671328671329,
+        "same_direction_observed": true,
+        "holm_p": 1.0
+      },
+      {
+        "label": "change",
+        "direction": "FP",
+        "pilot_count": 5,
+        "pilot_n": 10,
+        "audit_count": 2,
+        "audit_n": 6,
+        "pilot_rate": 0.5,
+        "audit_rate": 0.3333333333333333,
+        "fisher_p_exploratory": 0.6328671328671329,
+        "same_direction_observed": true,
+        "holm_p": 1.0
+      },
+      {
+        "label": "change",
+        "direction": "FN",
+        "pilot_count": 1,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.1,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "evaluation",
+        "direction": "FP",
+        "pilot_count": 0,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.0,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "evaluation",
+        "direction": "FN",
+        "pilot_count": 2,
+        "pilot_n": 10,
+        "audit_count": 2,
+        "audit_n": 6,
+        "pilot_rate": 0.2,
+        "audit_rate": 0.3333333333333333,
+        "fisher_p_exploratory": 0.6043956043956045,
+        "same_direction_observed": true,
+        "holm_p": 1.0
+      },
+      {
+        "label": "forecast",
+        "direction": "FP",
+        "pilot_count": 0,
+        "pilot_n": 10,
+        "audit_count": 0,
+        "audit_n": 6,
+        "pilot_rate": 0.0,
+        "audit_rate": 0.0,
+        "fisher_p_exploratory": 1.0,
+        "same_direction_observed": false,
+        "holm_p": 1.0
+      },
+      {
+        "label": "forecast",
+        "direction": "FN",
+        "pilot_count": 2,
+        "pilot_n": 10,
+        "audit_count": 2,
+        "audit_n": 6,
+        "pilot_rate": 0.2,
+        "audit_rate": 0.3333333333333333,
+        "fisher_p_exploratory": 0.6043956043956045,
+        "same_direction_observed": true,
+        "holm_p": 1.0
+      }
+    ],
+    "audit_completed": 6,
+    "audit_planned": 20,
+    "partial_audit": true,
+    "note": "Повтор ошибки в audit — свидетельство повторения, не доказательство «всегда». Отсутствие значимости не доказывает равенство. При частичном аудите выбор завершённых текстов неслучаен; анализ только описательный."
+  },
+  "stability": [
+    {
+      "id": "gazeta_18651",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_46346",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_44496",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_12827",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_35151",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_18627",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_19567",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_25263",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_38485",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    },
+    {
+      "id": "gazeta_25226",
+      "mean_binary_agreement": 1.0,
+      "all_label_sets_equal": true,
+      "exact_triples_equal": true
+    }
+  ],
+  "causal_consistency": {
+    "status": "exploratory_post_hoc",
+    "rule": "explicit causal marker in model relation, but cause label absent",
+    "note": "Правило предложено после просмотра пилота. Оно проверяет согласованность двух частей ответа Qwen, не человеческую правильность.",
+    "pilot": {
+      "causal_relation_documents": 1,
+      "missing_cause_label": 1,
+      "missing_rate": 1.0
+    },
+    "bulk": {
+      "causal_relation_documents": 59,
+      "missing_cause_label": 36,
+      "missing_rate": 0.6101694915254238
+    }
+  }
+}

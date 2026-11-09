@@ -1,0 +1,13 @@
+﻿label,direction,pilot_count,pilot_n,audit_count,audit_n,pilot_rate,audit_rate,fisher_p_exploratory,same_direction_observed,holm_p
+cause,FP,0,10,0,6,0.0,0.0,1.0,False,1.0
+cause,FN,7,10,4,6,0.7,0.6666666666666666,1.0,True,1.0
+goal,FP,0,10,0,6,0.0,0.0,1.0,False,1.0
+goal,FN,3,10,0,6,0.3,0.0,0.25,False,1.0
+conflict,FP,0,10,0,6,0.0,0.0,1.0,False,1.0
+conflict,FN,5,10,2,6,0.5,0.3333333333333333,0.6328671328671329,True,1.0
+change,FP,5,10,2,6,0.5,0.3333333333333333,0.6328671328671329,True,1.0
+change,FN,1,10,0,6,0.1,0.0,1.0,False,1.0
+evaluation,FP,0,10,0,6,0.0,0.0,1.0,False,1.0
+evaluation,FN,2,10,2,6,0.2,0.3333333333333333,0.6043956043956045,True,1.0
+forecast,FP,0,10,0,6,0.0,0.0,1.0,False,1.0
+forecast,FN,2,10,2,6,0.2,0.3333333333333333,0.6043956043956045,True,1.0

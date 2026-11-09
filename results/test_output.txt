@@ -1,0 +1,24 @@
+test_baseline_ids_and_real_ngrams (test_experiment.DataIntegrityTests) ... ok
+test_blind_form_contains_no_predictions (test_experiment.DataIntegrityTests) ... ok
+test_dataset_partition_and_provenance (test_experiment.DataIntegrityTests) ... ok
+test_fragments_cannot_invent_evidence (test_experiment.DataIntegrityTests) ... ok
+test_bootstrap_is_reproducible (test_experiment.MetricTests) ... ok
+test_empty_positive_convention (test_experiment.MetricTests) ... ok
+test_known_confusion (test_experiment.MetricTests) ... ok
+test_paired_bootstrap_identical_methods (test_experiment.MetricTests) ... ok
+test_perfect_bootstrap (test_experiment.MetricTests) ... ok
+test_transfer_counts_and_holm_correction (test_experiment.MetricTests) ... ok
+test_atomic_json_roundtrip (test_experiment.ValidationTests) ... ok
+test_duplicate_or_unknown_labels_rejected (test_experiment.ValidationTests) ... ok
+test_html_embedded_json_does_not_close_script (test_experiment.ValidationTests) ... ok
+test_import_requires_real_complete_answers (test_experiment.ValidationTests) ... ok
+test_invalid_or_fabricated_quote_rejected (test_experiment.ValidationTests) ... ok
+test_no_human_metrics_without_annotations (test_experiment.ValidationTests) ... ok
+test_one_to_one_semantic_review (test_experiment.ValidationTests) ... ok
+test_partial_audit_excludes_unanswered_documents (test_experiment.ValidationTests) ... ok
+test_protocol_change_invalidates_cache (test_experiment.ValidationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.864s
+
+OK

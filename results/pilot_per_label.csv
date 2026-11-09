@@ -1,0 +1,13 @@
+﻿method,label,TP,FP,FN,TN,f1,human_positive,model_positive
+qwen,cause,0,0,7,3,0.0,7,0
+qwen,goal,0,0,3,7,0.0,3,0
+qwen,conflict,3,0,5,2,0.5454545454545454,8,3
+qwen,change,2,5,1,2,0.4,3,7
+qwen,evaluation,0,0,2,8,0.0,2,0
+qwen,forecast,1,0,2,7,0.5,3,1
+lexical,cause,1,0,6,3,0.25,7,1
+lexical,goal,1,0,2,7,0.5,3,1
+lexical,conflict,2,0,6,2,0.4,8,2
+lexical,change,0,1,3,6,0.0,3,1
+lexical,evaluation,0,1,2,7,0.0,2,1
+lexical,forecast,2,0,1,7,0.8,3,2
