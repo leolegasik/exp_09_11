@@ -1,3 +1,4 @@
+"""Извлечение OpenIE-связей и сравнение с человеческой разметкой."""
 from __future__ import annotations
 
 import argparse
@@ -17,7 +18,6 @@ import numpy as np
 import pandas as pd
 import requests
 from scipy.stats import fisher_exact
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import cohen_kappa_score, f1_score, precision_score, recall_score
 
 ROOT = Path(__file__).resolve().parent
@@ -39,7 +39,30 @@ def ensure_dirs():
         (ROOT / name).mkdir(parents=True, exist_ok=True)
 
 def read_json(path):
-    return Path(path).read_text(encoding='utf-8-sig')
+    path = Path(path)
+    if path.exists():
+        return path.read_text(encoding='utf-8-sig')
+    member = path.resolve().relative_to(ROOT.resolve()).as_posix()
+    entries = model_archive_entries()
+    if member in entries:
+        return entries[member].decode('utf-8-sig')
+    raise FileNotFoundError(path)
+
+def model_archive_entries():
+    from zipfile import ZipFile
+    archive = ROOT/'results/model_outputs.zip'
+    if not archive.exists():
+        return {}
+    key = (str(archive.resolve()), archive.stat().st_mtime_ns)
+    if getattr(model_archive_entries, '_key', None) != key:
+        with ZipFile(archive) as zf:
+            model_archive_entries._entries = {name: zf.read(name) for name in zf.namelist()}
+        model_archive_entries._key = key
+    return model_archive_entries._entries
+
+def result_exists(path):
+    path = Path(path)
+    return path.exists() or path.resolve().relative_to(ROOT.resolve()).as_posix() in model_archive_entries()
 
 def save_json(path, obj):
     path = Path(path)
@@ -184,9 +207,10 @@ def validate_prediction(obj, text):
             raise ValueError('Evidence is not an exact substring')
     return obj
 
-def extract(doc, run=0):
+def extract(doc, run=0, *, use_cache=True, save=True):
+    """OpenIE: до двух главных отношений со свободными формулировками и цитатами."""
     path = cache_path(doc, run)
-    if path.exists():
+    if use_cache and result_exists(path):
         cached = load_json(path)
         if cached['text_sha256'] != doc['text_sha256']:
             raise ValueError('Changed input: refusing cache')
@@ -208,7 +232,8 @@ def extract(doc, run=0):
             response = requests.post(SERVER+'/v1/chat/completions', json=payload, timeout=(10, 180))
             response.raise_for_status()
             raw = response.json()
-            save_json(ROOT / f"results/raw_responses/{doc['id']}_{protocol_hash()[:12]}_{run}_{attempt}.json", raw)
+            if save:
+                save_json(ROOT / f"results/raw_responses/{doc['id']}_{protocol_hash()[:12]}_{run}_{attempt}.json", raw)
             if raw['choices'][0]['finish_reason'] != 'stop':
                 raise ValueError('Incomplete model response: '+str(raw['choices'][0]['finish_reason']))
             content = (raw['choices'][0]['message'].get('content') or '').strip()
@@ -226,12 +251,14 @@ def extract(doc, run=0):
                       'seconds': round(time.perf_counter()-start, 3), 'prediction': obj,
                       'stats': raw.get('usage', {}), 'evidence_fragment_ids': [t['e'] for t in raw_obj['triples']],
                       'utc': datetime.now(timezone.utc).isoformat()}
-            save_json(path, result)
+            if save:
+                save_json(path, result)
             return result
         except (requests.RequestException, ValueError, KeyError) as exc:
-            with (ROOT / 'results/errors.jsonl').open('a', encoding='utf-8') as fh:
-                fh.write(json.dumps({'id': doc['id'], 'run': run, 'attempt': attempt+1,
-                                     'error': str(exc), 'utc': datetime.now(timezone.utc).isoformat()}, ensure_ascii=False)+'\n')
+            if save:
+                with (ROOT / 'results/errors.jsonl').open('a', encoding='utf-8') as fh:
+                    fh.write(json.dumps({'id': doc['id'], 'run': run, 'attempt': attempt+1,
+                                         'error': str(exc), 'utc': datetime.now(timezone.utc).isoformat()}, ensure_ascii=False)+'\n')
             if attempt == 2:
                 raise RuntimeError(f"Failed {doc['id']}: {exc}") from exc
             # Новый запрос содержит причину ошибки. Идентичный повтор при temperature=0
@@ -266,8 +293,6 @@ def predict_all(limit=None, repeats=False):
             print(f'Pilot repeat {run}/2 done', flush=True)
     return predictions
 
-STOP = set('и в во не на а но что это по с со из у к ко за от до для о об при как то так же ли бы был была были быть он она они его ее их мы вы я оно или уже еще только также который которая которые если чем после через между под над без'.split())
-
 def lexical_labels(text):
     """Простой заранее фиксированный словарный baseline, без обучения на человеке."""
     patterns = {
@@ -281,27 +306,16 @@ def lexical_labels(text):
     return [k for k, p in patterns.items() if re.search(p, text.lower())]
 
 def make_baselines():
-    docs = corpus()
-    vec = TfidfVectorizer(ngram_range=(2, 3), lowercase=True, token_pattern=r'(?u)\b[а-яёА-ЯЁ]{2,}\b',
-                          max_features=30000, min_df=1)
-    # n-граммы строятся по исходной последовательности: удаление стоп-слов до извлечения
-    # создало бы сочетания, которых не было в тексте.
-    X = vec.fit_transform([d['text'] for d in docs])
-    names = vec.get_feature_names_out()
-    output = []
-    for i, doc in enumerate(docs):
-        row = X.getrow(i)
-        indices = row.indices[np.argsort(row.data)[::-1]]
-        phrases = [names[j] for j in indices if names[j].split()[0] not in STOP and names[j].split()[-1] not in STOP][:6]
-        output.append({'id': doc['id'], 'ngrams': phrases, 'labels': lexical_labels(doc['text'])})
+    output = [{'id': doc['id'], 'labels': lexical_labels(doc['text'])} for doc in corpus()]
     write_jsonl(ROOT / 'results/baselines.jsonl', output)
     return output
+
 
 def predictions():
     out = {}
     for doc in corpus():
         path = cache_path(doc)
-        if path.exists():
+        if result_exists(path):
             item = load_json(path)
             validate_prediction(item['prediction'], doc['text'])
             out[doc['id']] = item
@@ -349,6 +363,77 @@ def load_annotations(group, required=False):
     data = load_json(path)
     validate_annotations(data, group)
     return {x['id']: x for x in data['answers']}
+
+def openie_document(doc, record):
+    if record.get('id') != doc['id'] or record.get('text_sha256') != doc['text_sha256']:
+        raise ValueError('OpenIE: ответ относится к другому тексту.')
+    if record.get('protocol_sha256') != protocol_hash():
+        raise ValueError('OpenIE: ответ относится к другому протоколу.')
+    prediction = validate_prediction(record['prediction'], doc['text'])
+    triples = [{'subject': s, 'relation': r, 'object': o, 'evidence': evidence}
+               for s, r, o, evidence in prediction['triples']]
+    return {'id': doc['id'], 'text_sha256': doc['text_sha256'],
+            'protocol_sha256': protocol_hash(), 'extractor': 'qwen_openie',
+            'triples': triples}
+
+
+def export_openie(records=None):
+    """Один документ — строка JSONL; одна извлечённая связь — строка CSV."""
+    ensure_dirs()
+    started = time.perf_counter()
+    docs = corpus()
+    records = predictions() if records is None else records
+    known_ids = {d['id'] for d in docs}
+    if set(records) - known_ids:
+        raise ValueError('OpenIE: неизвестные идентификаторы текстов.')
+    output, rows = [], []
+    for doc in docs:
+        if doc['id'] not in records:
+            continue
+        item = openie_document(doc, records[doc['id']])
+        output.append(item)
+        for i, triple in enumerate(item['triples'], 1):
+            rows.append({'id': doc['id'], 'split': doc['split'], 'triple_index': i, **triple})
+    write_jsonl(ROOT/'results/openie.jsonl', output)
+    pd.DataFrame(rows, columns=['id', 'split', 'triple_index', 'subject', 'relation', 'object',
+                               'evidence']).to_csv(ROOT/'results/openie_triples.csv',
+                                                  index=False, encoding='utf-8-sig')
+    result = {'extractor': 'qwen_openie', 'protocol_sha256': protocol_hash(),
+              'documents': len(output), 'missing_documents': len(docs)-len(output),
+              'triples': len(rows), 'max_triples_per_document': 2,
+              'documents_with_triples': sum(bool(x['triples']) for x in output),
+              'export_seconds': round(time.perf_counter()-started, 4),
+              'additional_model_calls': 0}
+    save_json(ROOT/'results/openie_summary.json', result)
+    return result
+
+
+def check_server(limit=3):
+    """Свежие запросы без изменения сохранённого исследовательского прогона."""
+    if limit < 1:
+        raise ValueError('Число проверяемых текстов должно быть положительным.')
+    response = requests.get(SERVER+'/v1/models', timeout=10)
+    response.raise_for_status()
+    if MODEL not in {m['id'] for m in response.json()['data']}:
+        raise RuntimeError('LM Studio не показывает модель: '+MODEL)
+    docs = sorted(group_docs('pilot'), key=lambda d: d['id'])[:limit]
+    started = time.perf_counter()
+    checked = []
+    for doc in docs:
+        record = extract(doc, use_cache=False, save=False)
+        item = openie_document(doc, record)
+        checked.append({'id': doc['id'], 'triples': len(item['triples']),
+                        'seconds': record['seconds'], 'attempts': record['attempts'],
+                        'stats': record['stats']})
+    result = {'status': 'passed', 'server': SERVER, 'model': MODEL,
+              'checked_utc': datetime.now(timezone.utc).isoformat(),
+              'protocol_sha256': protocol_hash(), 'cached_results_used': False,
+              'seconds': round(time.perf_counter()-started, 3), 'documents': checked,
+              'checks': ['complete JSON', 'valid OpenIE structure', 'exact source evidence'],
+              'semantic_accuracy_evaluated': False}
+    save_json(ROOT/'results/server_check.json', result)
+    return result
+
 
 def group_docs(group):
     return [d for d in corpus() if (d['split'] == 'pilot' if group == 'pilot' else d['audit'])]
@@ -547,7 +632,7 @@ def stability():
     rows = []
     for d in group_docs('pilot'):
         paths = [cache_path(d, run) for run in range(3)]
-        if not all(p.exists() for p in paths):
+        if not all(result_exists(p) for p in paths):
             continue
         preds = [load_json(p)['prediction'] for p in paths]
         pairs = []
@@ -586,6 +671,7 @@ def summary_report():
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     docs, pred = corpus(), predictions()
+    openie = export_openie(pred)
     by_id = {d['id']: d for d in docs}
     rows = []
     for i, p in pred.items():
@@ -609,6 +695,7 @@ def summary_report():
               'pilot_processed': sum(by_id[i]['split'] == 'pilot' for i in pred),
               'bulk_processed': sum(by_id[i]['split'] == 'bulk' for i in pred),
               'triples': sum(len(p['prediction']['triples']) for p in pred.values()),
+              'representation': 'OpenIE', 'openie': openie,
               'retry_documents': sum(p['attempts'] > 1 for p in pred.values()),
               'pilot_evaluation': evaluate('pilot'), 'audit_evaluation': evaluate('audit'),
               'pilot_relations': relation_metrics('pilot'), 'audit_relations': relation_metrics('audit'),
@@ -640,6 +727,11 @@ def summary_report():
         fig.savefig(ROOT/'results/figures/human_error_rates.png', dpi=150); plt.close(fig)
     measured = result['pilot_evaluation']['status'] == 'measured'
     text = f'''# Результаты эксперимента\n\nМодель: `{MODEL}` через локальную LM Studio. Обработано **{len(pred)}/{len(docs)}** текстов, из них пилот {result['pilot_processed']}/10, остальная выборка {result['bulk_processed']}/990. Извлечено связей: {result['triples']}. Документов с дополнительными техническими попытками: {result['retry_documents']}.\n\nИсточник — [Gazeta](https://github.com/IlyaGusev/gazeta), поле summary: короткие редакционные аннотации на русском. Модель и участник анализируют одинаковую строку без заголовка. Промпт и определения зафиксированы до получения ответов участника.\n\n'''
+    text += ('Представление связей — OpenIE через Qwen: свободные отношения «субъект → отношение → объект», '
+             'до двух главных связей на текст. Связи и шесть отдельных признаков извлекаются одним запросом. '
+             'Словарь служит отдельной точкой сравнения признаков. Выгрузки: `openie.jsonl` и '
+             '`openie_triples.csv`; число связей проверяется по `openie_summary.json`. '
+             'Графы строятся из тех же связей. Дополнительные запросы для выгрузки не нужны.\n\n')
     if measured:
         m = result['pilot_evaluation']['methods']['qwen']
         text += '## Сравнение с разметкой 10 текстов\n\nОдин участник, 60 бинарных решений (10 текстов × 6 признаков). Решения внутри текста зависимы; интервалы строятся перевыборкой целых текстов.\n\n'
@@ -703,17 +795,25 @@ def summary_report():
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command', choices=['prepare', 'predict', 'report', 'forms', 'import', 'import-review'])
+    p.add_argument('command', choices=['prepare', 'predict', 'report', 'forms', 'import', 'import-review', 'openie', 'check-server'])
     p.add_argument('--limit', type=int)
     p.add_argument('--repeats', action='store_true')
     p.add_argument('--file', type=Path)
     p.add_argument('--allow-partial', action='store_true', help='Импорт завершённых ответов частичного аудита')
     a = p.parse_args()
+    if a.limit is not None and a.limit < 1:
+        p.error('--limit must be positive')
     ensure_dirs()
     if a.command == 'prepare':
         prepare_data(); make_baselines()
     elif a.command == 'predict':
         predict_all(a.limit, a.repeats)
+    elif a.command == 'openie':
+        predict_all(a.limit, a.repeats)
+        make_baselines()
+        print(json.dumps(export_openie(), ensure_ascii=True, indent=2))
+    elif a.command == 'check-server':
+        print(json.dumps(check_server(a.limit or 3), ensure_ascii=True, indent=2))
     elif a.command == 'report':
         print(json.dumps(summary_report(), ensure_ascii=True, indent=2)[:4000])
     elif a.command == 'forms':

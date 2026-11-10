@@ -1,6 +1,7 @@
 """Итоговая проверка фактических результатов, а не только структуры кода."""
 import json
 import subprocess
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,6 +45,7 @@ test = subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', 'test
                       cwd=root, capture_output=True, text=True, encoding='utf-8', errors='replace')
 (root/'results/test_output.txt').write_text(test.stdout+test.stderr, encoding='utf-8')
 assert test.returncode == 0, test.stderr
+test_count = int(re.search(r'Ran (\d+) tests?', test.stderr).group(1))
 
 human = {}
 for group in ['pilot', 'audit']:
@@ -58,12 +60,12 @@ assert summary['processed'] == 1000 and len(summary['stability']) == 10
 result = {'validated_utc': datetime.now(timezone.utc).isoformat(), 'status': 'passed',
           'machine_documents': len(pred), 'pilot_total_runs': 30, 'reasoning_tokens': reasoning_tokens,
           'completion_tokens_first_pass': generated_tokens, 'notebook_code_cells_executed': len(code_cells),
-          'unit_tests': 19, 'unit_test_status': 'passed', 'real_human_annotations': human,
+          'unit_tests': test_count, 'unit_test_status': 'passed', 'real_human_annotations': human,
           'pilot_relation_review': e.relation_metrics('pilot')['status'],
           'transfer_test': summary['transfer']['status'], 'protocol_sha256': e.protocol_hash(),
           'corpus_sha256': e.load_json(root/'data/manifest.json')['corpus_file_sha256'],
-          'ui_checks': ['blind form readable', 'incomplete export blocked', 'draft restored after reload',
-                        'model results initially hidden', 'graph nodes, arrows and quotes rendered'],
+          'openie_documents': len(e.read_jsonl(root/'results/openie.jsonl')),
+          'openie_triples': len(e.pd.read_csv(root/'results/openie_triples.csv')),
           'note': 'Validation checks technical integrity. Semantic correctness is measured by real human annotations, not guaranteed.'}
 e.save_json(root/'results/validation.json', result)
 print(json.dumps(result, ensure_ascii=True, indent=2))

@@ -1,5 +1,5 @@
 import json
-from experiment import ROOT, LABELS, SEED, corpus, group_docs, load_json, predictions, load_annotations, read_jsonl, protocol_hash
+from experiment import ROOT, LABELS, SEED, corpus, group_docs, load_json, predictions, load_annotations, protocol_hash
 
 STYLE = '''
 :root{color-scheme:light;font:17px/1.55 system-ui,sans-serif;color:#152d39;background:#edf3f5}
@@ -92,18 +92,16 @@ function show(){if(!allowed)return;const d=docs[+document.querySelector('#pick')
  return node(t[0],5)+node(t[2],705)+`<line x1="305" y1="${y+75}" x2="695" y2="${y+75}" stroke="#197c77" stroke-width="3" marker-end="url(#arrow)"/><foreignObject x="320" y="${y+5}" width="365" height="60"><div xmlns="http://www.w3.org/1999/xhtml" style="font:17px system-ui;text-align:center;line-height:1.2;overflow-wrap:anywhere">${esc(t[1])}</div></foreignObject>`;}).join('')}</svg>`:'Нет выделенных связей';
  document.querySelector('#edges').innerHTML=triples.map((t,i)=>`<div class="edge"><b>${i+1}. ${esc(t[0])} → ${esc(t[1])} → ${esc(t[2])}</b><p class="quote">Цитата: «${esc(t[3])}»</p></div>`).join('');
  document.querySelector('#labels').innerHTML=p.labels.map(k=>`<span class="pill">${esc(labels[k][0])}</span>`).join('')||'Ни один из шести признаков не выделен.';
- document.querySelector('#ngrams').textContent=base[d.id]?.ngrams.join(' · ')||'';
 }
 '''
 
 def demo():
     docs = group_docs('pilot')
     pred = predictions()
-    base = {x['id']:x for x in read_jsonl(ROOT/'results/baselines.jsonl')}
-    body = '''<header><p class="hint">Смысл текста · Qwen3.5-9B · локальный эксперимент</p><h1>Как машина представляет смысл</h1><p>Граф читается слева направо: кто или что → отношение → с кем или с чем. Точная цитата позволяет проверить основание связи. Цитата сама по себе не доказывает корректность интерпретации.</p>
+    body = '''<header><p class="hint">Смысл текста · Qwen3.5-9B · локальный эксперимент</p><h1>OpenIE: смысловые связи в тексте</h1><p>Граф читается слева направо: кто или что → отношение → с кем или с чем. Точная цитата позволяет проверить основание связи. Цитата сама по себе не доказывает корректность интерпретации.</p>
     <label class="warning"><input type="checkbox" id="unlock">Показать смысловые связи Qwen для пилотных текстов</label></header>
-    <main id="viewer" hidden><section class="card"><label>Выберите текст<select id="pick"></select></label><p id="text" class="text"></p><p id="source" class="hint"></p><h2>Смысловые связи</h2><div id="graph"></div><div id="edges"></div><h2>Смысловые признаки</h2><p id="labels"></p><details><summary>Биграммы и триграммы TF–IDF для сравнения</summary><p id="ngrams"></p><p class="hint">Сочетания слов сохраняют лексику, но сами по себе не обозначают направление связи, отрицание или причинность.</p></details></section></main>'''
-    script = f'const docs={js_json(docs)},pred={js_json({d["id"]:pred[d["id"]] for d in docs if d["id"] in pred})},base={js_json(base)},labels={js_json(LABELS)};\n'+DEMO_JS
+    <main id="viewer" hidden><section class="card"><label>Выберите текст<select id="pick"></select></label><p id="text" class="text"></p><p id="source" class="hint"></p><h2>Связи OpenIE</h2><div id="graph"></div><div id="edges"></div><h2>Смысловые признаки</h2><p id="labels"></p></section></main>'''
+    script = f'const docs={js_json(docs)},pred={js_json({d["id"]:pred[d["id"]] for d in docs if d["id"] in pred})},labels={js_json(LABELS)};\n'+DEMO_JS
     (ROOT/'results/03_demo_after_annotation.html').write_text(shell('Смысловые графы Qwen', body, script), encoding='utf-8')
 
 REVIEW_JS = r'''
