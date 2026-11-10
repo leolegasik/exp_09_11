@@ -1,0 +1,73 @@
+{
+  "generated_utc": "2026-11-10T01:19:58.920624+00:00",
+  "documents": 1000,
+  "pilot_documents": 10,
+  "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+  "corpus_sha256": "764e3d2a16fdd3e6d803c4a039ad0ef86c1a702dda2750df3c0d45810c7bad77",
+  "restored_ngram_file_sha256": "588a517c73e7db26fb9b3dfe7a2448c481fe4ed1aba6ffaf8bf52f0e5d2b1f7e",
+  "matches_legacy_ngram_file": true,
+  "ngram_units": 5994,
+  "openie_relations": 1721,
+  "ngram_mean_characters": 137.506,
+  "openie_mean_characters": 151.92,
+  "ngram_nonempty_documents": 1000,
+  "openie_nonempty_documents": 999,
+  "human_word_coverage": {
+    "ngram_mean": 0.25028053645700704,
+    "openie_mean": 0.4585949834479246,
+    "openie_minus_ngram_mean": 0.20831444699091758,
+    "paired_bootstrap95": [
+      0.03671560669722435,
+      0.3839179770393006
+    ],
+    "openie_higher_documents": 8,
+    "equal_documents": 0,
+    "ngram_higher_documents": 2,
+    "metric": "Exact content-word overlap, no lemmatization; evidence excluded; not semantic quality"
+  },
+  "manual_relation_evaluation": {
+    "openie": {
+      "status": "measured",
+      "machine_links": 17,
+      "human_links": 27,
+      "matched_links": 14,
+      "supported_links": 17,
+      "precision": 0.8235294117647058,
+      "recall": 0.5185185185185185,
+      "f1": 0.6363636363636364,
+      "supported_fraction": 1.0,
+      "note": "Ручное взаимно однозначное сопоставление по смыслу одним участником; это не Smatch и не независимый экспертный эталон."
+    },
+    "ngrams": null
+  },
+  "facet_metrics": {
+    "pilot": {
+      "before_micro_f1": 0.3243243243243243,
+      "after_micro_f1": 0.3243243243243243,
+      "difference": 0.0
+    },
+    "audit": {
+      "before_micro_f1": 0.4,
+      "after_micro_f1": 0.4,
+      "difference": 0.0
+    }
+  },
+  "timing": {
+    "ngram_compute_seconds_runs": [
+      0.17616160000034142,
+      0.19491679999919143,
+      0.17014650000055553,
+      0.17128800000500632
+    ],
+    "ngram_compute_seconds_median": 0.17372480000267387,
+    "openie_from_memory_seconds_runs": [
+      0.035310500003106426,
+      0.0363978000023053,
+      0.03781139999773586
+    ],
+    "openie_from_memory_seconds_median": 0.0363978000023053,
+    "original_qwen_generation_seconds_sum": 1303.431000000001,
+    "note": "In-memory steps exclude disk IO; original generation is historical, not a simultaneous speed benchmark"
+  },
+  "additional_model_calls": 0
+}

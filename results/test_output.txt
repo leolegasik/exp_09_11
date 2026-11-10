@@ -1,7 +1,14 @@
-test_baseline_ids_and_real_ngrams (test_experiment.DataIntegrityTests) ... ok
+test_evidence_cannot_inflate_word_coverage (test_comparison.ComparisonTests) ... ok
+test_known_word_coverage_and_empty_reference (test_comparison.ComparisonTests) ... ok
+test_no_fabricated_quality_comparison (test_comparison.ComparisonTests) ... ok
+test_reconstructed_file_and_counts (test_comparison.ComparisonTests) ... ok
 test_blind_form_contains_no_predictions (test_experiment.DataIntegrityTests) ... ok
 test_dataset_partition_and_provenance (test_experiment.DataIntegrityTests) ... ok
+test_dictionary_baseline_has_only_labels (test_experiment.DataIntegrityTests) ... ok
 test_fragments_cannot_invent_evidence (test_experiment.DataIntegrityTests) ... ok
+test_openie_export_matches_evaluated_relations (test_experiment.DataIntegrityTests) ... ok
+test_openie_export_never_calls_model (test_experiment.DataIntegrityTests) ... ok
+test_openie_rejects_stale_protocol_or_different_text (test_experiment.DataIntegrityTests) ... ok
 test_bootstrap_is_reproducible (test_experiment.MetricTests) ... ok
 test_empty_positive_convention (test_experiment.MetricTests) ... ok
 test_known_confusion (test_experiment.MetricTests) ... ok
@@ -10,6 +17,7 @@ test_perfect_bootstrap (test_experiment.MetricTests) ... ok
 test_transfer_counts_and_holm_correction (test_experiment.MetricTests) ... ok
 test_atomic_json_roundtrip (test_experiment.ValidationTests) ... ok
 test_duplicate_or_unknown_labels_rejected (test_experiment.ValidationTests) ... ok
+test_fresh_request_bypasses_cache_and_does_not_save (test_experiment.ValidationTests) ... ok
 test_html_embedded_json_does_not_close_script (test_experiment.ValidationTests) ... ok
 test_import_requires_real_complete_answers (test_experiment.ValidationTests) ... ok
 test_invalid_or_fabricated_quote_rejected (test_experiment.ValidationTests) ... ok
@@ -19,6 +27,6 @@ test_partial_audit_excludes_unanswered_documents (test_experiment.ValidationTest
 test_protocol_change_invalidates_cache (test_experiment.ValidationTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 19 tests in 0.864s
+Ran 27 tests in 5.397s
 
 OK

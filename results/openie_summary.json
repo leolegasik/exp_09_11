@@ -1,0 +1,11 @@
+{
+  "extractor": "qwen_openie",
+  "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+  "documents": 1000,
+  "missing_documents": 0,
+  "triples": 1721,
+  "max_triples_per_document": 2,
+  "documents_with_triples": 999,
+  "export_seconds": 0.0599,
+  "additional_model_calls": 0
+}

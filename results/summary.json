@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-09T15:35:35.279132+00:00",
+  "generated_utc": "2026-11-10T01:08:37.276725+00:00",
   "model": "qwen/qwen3.5-9b",
   "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
   "corpus": 1000,
@@ -7,6 +7,18 @@
   "pilot_processed": 10,
   "bulk_processed": 990,
   "triples": 1721,
+  "representation": "OpenIE",
+  "openie": {
+    "extractor": "qwen_openie",
+    "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+    "documents": 1000,
+    "missing_documents": 0,
+    "triples": 1721,
+    "max_triples_per_document": 2,
+    "documents_with_triples": 999,
+    "export_seconds": 0.0599,
+    "additional_model_calls": 0
+  },
   "retry_documents": 0,
   "pilot_evaluation": {
     "status": "measured",

@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "server": "http://127.0.0.1:1234",
+  "model": "qwen/qwen3.5-9b",
+  "checked_utc": "2026-11-10T01:06:05.901703+00:00",
+  "protocol_sha256": "771b1e4b8b7af9878efedc330cbcdb40ced7d6eb5d362075f2d800ec352857fa",
+  "cached_results_used": false,
+  "seconds": 3.578,
+  "documents": [
+    {
+      "id": "gazeta_12827",
+      "triples": 1,
+      "seconds": 1.15,
+      "attempts": 1,
+      "stats": {
+        "prompt_tokens": 612,
+        "completion_tokens": 43,
+        "total_tokens": 655,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "gazeta_18627",
+      "triples": 1,
+      "seconds": 0.794,
+      "attempts": 1,
+      "stats": {
+        "prompt_tokens": 777,
+        "completion_tokens": 40,
+        "total_tokens": 817,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "gazeta_18651",
+      "triples": 2,
+      "seconds": 1.633,
+      "attempts": 1,
+      "stats": {
+        "prompt_tokens": 765,
+        "completion_tokens": 89,
+        "total_tokens": 854,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      }
+    }
+  ],
+  "checks": [
+    "complete JSON",
+    "valid OpenIE structure",
+    "exact source evidence"
+  ],
+  "semantic_accuracy_evaluated": false
+}

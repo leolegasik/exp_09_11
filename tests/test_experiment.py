@@ -43,15 +43,49 @@ class DataIntegrityTests(unittest.TestCase):
             self.assertNotIn('stats', text)
             self.assertNotIn('<script src=', text)
 
-    def test_baseline_ids_and_real_ngrams(self):
-        docs = {d['id']:d for d in e.corpus()}
+    def test_dictionary_baseline_has_only_labels(self):
+        docs = {d['id']: d for d in e.corpus()}
         base = e.read_jsonl(e.ROOT/'results/baselines.jsonl')
         self.assertEqual({x['id'] for x in base}, set(docs))
-        import re
         for item in base:
-            tokens = re.findall(r'(?u)\b[а-яёА-ЯЁ]{2,}\b', docs[item['id']]['text'].lower())
-            candidates = {' '.join(tokens[i:i+n]) for n in [2, 3] for i in range(len(tokens)-n+1)}
-            self.assertTrue(set(item['ngrams']).issubset(candidates))
+            self.assertEqual(set(item), {'id', 'labels'})
+            self.assertEqual(item['labels'], e.lexical_labels(docs[item['id']]['text']))
+
+    def test_openie_export_matches_evaluated_relations(self):
+        docs, pred = e.corpus(), e.predictions()
+        output = e.read_jsonl(e.ROOT/'results/openie.jsonl')
+        self.assertEqual({x['id'] for x in output}, {d['id'] for d in docs})
+        by_id = {d['id']: d for d in docs}
+        for item in output:
+            expected = e.openie_document(by_id[item['id']], pred[item['id']])
+            self.assertEqual(item, expected)
+        csv = e.pd.read_csv(e.ROOT/'results/openie_triples.csv')
+        self.assertEqual(len(csv), sum(len(x['triples']) for x in output))
+        for item in csv.to_dict('records'):
+            triple = output[[x['id'] for x in output].index(item['id'])]['triples'][item['triple_index']-1]
+            self.assertEqual({k: item[k] for k in triple}, triple)
+
+    def test_openie_rejects_stale_protocol_or_different_text(self):
+        doc = e.corpus()[0]
+        record = e.predictions()[doc['id']]
+        for key in ['id', 'text_sha256', 'protocol_sha256']:
+            bad = copy.deepcopy(record); bad[key] = 'wrong'
+            with self.assertRaises(ValueError):
+                e.openie_document(doc, bad)
+
+    def test_openie_export_never_calls_model(self):
+        doc = e.corpus()[0]
+        record = e.predictions()[doc['id']]
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(e, 'ROOT', Path(directory)), patch.object(e, 'corpus', return_value=[doc]), \
+                 patch.object(e, 'extract', side_effect=AssertionError('Unexpected model call')):
+                result = e.export_openie({doc['id']: record})
+                self.assertEqual(result['documents'], 1)
+                self.assertEqual(result['additional_model_calls'], 0)
+                result = e.export_openie({})
+                self.assertEqual(result['documents'], 0)
+                self.assertEqual(result['missing_documents'], 1)
+                self.assertEqual(len(e.pd.read_csv(e.ROOT/'results/openie_triples.csv')), 0)
 
 
 class MetricTests(unittest.TestCase):
@@ -105,6 +139,17 @@ class MetricTests(unittest.TestCase):
 
 
 class ValidationTests(unittest.TestCase):
+    def test_fresh_request_bypasses_cache_and_does_not_save(self):
+        doc = e.corpus()[0]
+        raw = {'choices': [{'finish_reason': 'stop', 'message': {'content': json.dumps({
+            'triples': [{'s': 'А', 'r': 'связано с', 'o': 'Б', 'e': 0}], 'labels': []})}}]}
+        with patch.object(e.requests, 'post') as post, patch.object(e, 'load_json', side_effect=AssertionError('Cache read')), \
+             patch.object(e, 'save_json', side_effect=AssertionError('Write')):
+            post.return_value.json.return_value = raw
+            result = e.extract(doc, use_cache=False, save=False)
+        self.assertEqual(post.call_count, 1)
+        self.assertEqual(result['prediction']['triples'][0][3], doc['text'])
+
     def test_invalid_or_fabricated_quote_rejected(self):
         good = {'triples': [['Кот', 'спит на', 'ковре', 'Кот спит на ковре.']], 'labels': []}
         self.assertEqual(e.validate_prediction(good, 'Кот спит на ковре.'), good)
